@@ -1,12 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
+import router from "./src/modules/alojamento/routes/alojamento.route.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-
+app.use(router)
 const porta = process.env.PORTA;
 
 app.get("/", (requisicao, resposta) => {
