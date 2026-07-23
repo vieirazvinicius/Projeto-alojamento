@@ -1,6 +1,6 @@
 import conexao from "../../../config/database.js"
 
-class adminstradorModel{
+class administradorModel{
     static async cadastrar(id, nome, email, senha){
         const dados = [id, nome, email, senha]
         const query = `insert into admins(id, nome, email, senha) values ($1, $2, $3, $4) returning *`
@@ -20,4 +20,4 @@ class adminstradorModel{
     }
 }
 
-export default adminstradorModel;
+export default administradorModel;

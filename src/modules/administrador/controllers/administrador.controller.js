@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import adminstradorModel from "../models/administrador.model.js";
+import administradorModel from "../models/administrador.model.js";
 
 class administradorController{
     static async cadastrar(requisicao, resposta){
@@ -9,7 +9,7 @@ class administradorController{
             if(!id || !nome || !email || !senha){
                 return resposta.status(400).json({mensagem: "Todos os campos são obrigatórios!"})
             }
-            const totalAdmin = await adminstradorModel.contarAdmins()
+            const totalAdmin = await administradorModel.contarAdmins()
             if(totalAdmin > 0){
                 return resposta.status(409).json({mensagem: "Administrador já cadastrado!"})
             }
@@ -25,7 +25,7 @@ class administradorController{
             }
              const salt = bcrypt.genSaltSync(10);
             const hashSenha = bcrypt.hashSync("B4c0/\/", salt);
-            await adminstradorModel.cadastrar(id, nome, email, senha=hashSenha)
+            await administradorModel.cadastrar(id, nome, email, senha=hashSenha)
             return resposta.status(201).json({mensagem: "Usuário administrador criado com sucesso!"})
         } catch (error) {
             resposta.status(500).json({mensagem: "Erro ao cadastrar administrador!", erro: error.message})
@@ -37,7 +37,7 @@ class administradorController{
             if(!email || !senha){
                 return resposta.status(403).json({mensagem: "Forneça o e-mail e senha para o login"})
             }
-            const administrador = await adminstradorModel.buscarPorEmail(email)
+            const administrador = await administradorModel.buscarPorEmail(email)
             if(administrador.length === 0){
                 return resposta.status(400).json({mensagem:"Usuário não encontrado!"})
             }
@@ -62,6 +62,17 @@ class administradorController{
             resposta.status(200).json({mensagem: "Usuario autenticado com sucesso", token})
         } catch (error) {
             resposta.status(500).json({mensagem: "Erro interno ao efetuar login!", erro: error.message})
+        }
+    }
+    static async perfil(requisicao, resposta){
+        try {
+            const administrador = await administradorModel.buscarPorEmail(requisicao.administrador.email)
+            if(administrador.length === 0){
+                return resposta.status(409).json({mensagem:"Usuário precisa fazer login!"})
+            }
+            resposta.statrus(200).json(administrador)
+        } catch (error) {
+            resposta.status(500).json({mensagem: "Erro ao buscar pefil do usuário!", erro: error.message})
         }
     }
 
