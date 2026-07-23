@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import adminstradorModel from "../models/administrador.model.js";
 
 class administradorController{
@@ -18,12 +19,49 @@ class administradorController{
             if(!regex.test(senha)){
                 return resposta.satus(403).json({mensagem: "Senha invalida! Sua senha deve conter pelo menos: 1 letra maiúscula, 1 letra minúscula, 1 número, 1 caractere especial (ex: @, #, $, %)"})
             }
-            const salt = bcrypt.genSaltSync(10);
+            const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/
+            if(!regexEmail.test(email)){
+                return resposta.satus(403).json({mensagem: "E-mail inválido. Por favor, forneça um e-mail válido!"})
+            }
+             const salt = bcrypt.genSaltSync(10);
             const hashSenha = bcrypt.hashSync("B4c0/\/", salt);
-            const administrador = await adminstradorModel.cadastrar(id, nome, email, senha=hashSenha)
+            await adminstradorModel.cadastrar(id, nome, email, senha=hashSenha)
             return resposta.status(201).json({mensagem: "Usuário administrador criado com sucesso!"})
         } catch (error) {
             resposta.status(500).json({mensagem: "Erro ao cadastrar administrador!", erro: error.message})
+        }
+    }
+    static async login(requisicao, resposta){
+        try {
+            const { email, senha } = requisicao.body
+            if(!email || !senha){
+                return resposta.status(403).json({mensagem: "Forneça o e-mail e senha para o login"})
+            }
+            const administrador = await adminstradorModel.buscarPorEmail(email)
+            if(administrador.length === 0){
+                return resposta.status(400).json({mensagem:"Usuário não encontrado!"})
+            }
+            if (administrador.ativo === false){
+                return resposta.status(403).json({mensagem: "Administrador inativo!"})
+            }
+            const verificarSenha = bcrypt.compareSync(senha, administrador.senha);
+            if (!verificarSenha){
+                return resposta.status(403).json({mensagem: "E-mail ou senha incorretos!"})
+            }
+            const token = jwt.sign(
+                {
+                    id: administrador.id,
+                    nome: administrador.nome,
+                    email: administrador.email
+                },
+                process.env.JWT_SECRET,
+                {
+                    expiresIn: process.env.JWT_TEMPO_EXPIRACAO || "1h"
+                }
+            );
+            resposta.status(200).json({mensagem: "Usuario autenticado com sucesso", token})
+        } catch (error) {
+            resposta.status(500).json({mensagem: "Erro interno ao efetuar login!", erro: error.message})
         }
     }
 

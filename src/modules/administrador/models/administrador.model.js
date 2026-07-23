@@ -14,7 +14,7 @@ class adminstradorModel{
     }
     static async buscarPorEmail(email){
         const dados = [email]
-        const query = `select email from admins where email = $1`
+        const query = `select * from admins where email = $1`
         const resultado = await conexao.query(query, dados)
         return resultado.rows
     }
