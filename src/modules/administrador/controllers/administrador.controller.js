@@ -5,8 +5,8 @@ import administradorModel from "../models/administrador.model.js";
 class administradorController{
     static async cadastrar(requisicao, resposta){
         try {
-            const { id, nome, email, senha } = requisicao.body
-            if(!id || !nome || !email || !senha){
+            const { nome, email, senha } = requisicao.body
+            if( !nome || !email || !senha){
                 return resposta.status(400).json({mensagem: "Todos os campos são obrigatórios!"})
             }
             const totalAdmin = await administradorModel.contarAdmins()
@@ -25,7 +25,7 @@ class administradorController{
             }
              const salt = bcrypt.genSaltSync(10);
             const hashSenha = bcrypt.hashSync("B4c0/\/", salt);
-            await administradorModel.cadastrar(id, nome, email, senha=hashSenha)
+            await administradorModel.cadastrar( nome, email, hashSenha)
             return resposta.status(201).json({mensagem: "Usuário administrador criado com sucesso!"})
         } catch (error) {
             resposta.status(500).json({mensagem: "Erro ao cadastrar administrador!", erro: error.message})
@@ -56,7 +56,7 @@ class administradorController{
                 },
                 process.env.JWT_SECRET,
                 {
-                    expiresIn: process.env.JWT_TEMPO_EXPIRACAO || "1h"
+                    expiresIn: process.env.JWT_TEMPO_EXPIRACAO 
                 }
             );
             resposta.status(200).json({mensagem: "Usuario autenticado com sucesso", token})
@@ -77,3 +77,5 @@ class administradorController{
     }
 
 }
+
+export default administradorController

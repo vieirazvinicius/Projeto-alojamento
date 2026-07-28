@@ -1,13 +1,17 @@
 import express from "express";
 import dotenv from "dotenv";
 import router from "./src/modules/alojamento/routes/alojamento.route.js";
+import routerAdmin from "./src/modules/administrador/routes/administrador.route.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-app.use(router)
+
+app.use("/alojamento", router);
+app.use("/admin", routerAdmin);
+
 const porta = process.env.PORTA;
 
 app.get("/", (requisicao, resposta) => {

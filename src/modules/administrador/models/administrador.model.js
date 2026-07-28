@@ -1,9 +1,9 @@
 import conexao from "../../../config/database.js"
 
 class administradorModel{
-    static async cadastrar(id, nome, email, senha){
-        const dados = [id, nome, email, senha]
-        const query = `insert into admins(id, nome, email, senha) values ($1, $2, $3, $4) returning *`
+    static async cadastrar(nome, email, senha){
+        const dados = [nome, email, senha]
+        const query = `insert into admins(nome, email, senha) values ($1, $2, $3,) returning *`
         const resultado = await conexao.query(query, dados)
         return resultado.rows
     } 
