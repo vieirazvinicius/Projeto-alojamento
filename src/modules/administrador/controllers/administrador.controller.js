@@ -24,7 +24,7 @@ class administradorController{
                 return resposta.satus(403).json({mensagem: "E-mail inválido. Por favor, forneça um e-mail válido!"})
             }
              const salt = bcrypt.genSaltSync(10);
-            const hashSenha = bcrypt.hashSync("B4c0/\/", salt);
+            const hashSenha = bcrypt.hashSync(senha, salt);
             await administradorModel.cadastrar( nome, email, hashSenha)
             return resposta.status(201).json({mensagem: "Usuário administrador criado com sucesso!"})
         } catch (error) {

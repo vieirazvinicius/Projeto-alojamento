@@ -3,7 +3,7 @@ import conexao from "../../../config/database.js"
 class administradorModel{
     static async cadastrar(nome, email, senha){
         const dados = [nome, email, senha]
-        const query = `insert into admins(nome, email, senha) values ($1, $2, $3,) returning *`
+        const query = `insert into admins(nome, email, senha) values ($1, $2, $3) returning *`
         const resultado = await conexao.query(query, dados)
         return resultado.rows
     } 
