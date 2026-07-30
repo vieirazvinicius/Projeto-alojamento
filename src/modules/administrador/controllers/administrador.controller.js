@@ -9,9 +9,9 @@ class administradorController{
             if( !nome || !email || !senha){
                 return resposta.status(400).json({mensagem: "Todos os campos são obrigatórios!"})
             }
-            const totalAdmin = await administradorModel.contarAdmins()
+            const totalAdmin = await administradorModel.verificaAdminsAtivos()
             if(totalAdmin > 0){
-                return resposta.status(409).json({mensagem: "Administrador já cadastrado!"})
+                return resposta.status(409).json({mensagem: "Existe um administrador cadastrado e ativo no sistema!"})
             }
             if(senha.length < 8)
                 return resposta.status(403).json({mensagem: "A senha deve ter no mínimo 8 caracteres!"})
@@ -35,11 +35,11 @@ class administradorController{
         try {
             const { email, senha } = requisicao.body
             if(!email || !senha){
-                return resposta.status(403).json({mensagem: "Forneça o e-mail e senha para o login"})
+                return resposta.status(400).json({mensagem: "Forneça o e-mail e senha para o login"})
             }
             const administrador = await administradorModel.buscarPorEmail(email)
-            if(administrador.length === 0){
-                return resposta.status(400).json({mensagem:"Usuário não encontrado!"})
+            if(!administrador){
+                return resposta.status(401).json({mensagem:"Usuário não encontrado!"})
             }
             if (administrador.ativo === false){
                 return resposta.status(403).json({mensagem: "Administrador inativo!"})
@@ -66,13 +66,14 @@ class administradorController{
     }
     static async perfil(requisicao, resposta){
         try {
-            const administrador = await administradorModel.buscarPorEmail(requisicao.administrador.email)
-            if(administrador.length === 0){
-                return resposta.status(409).json({mensagem:"Usuário precisa fazer login!"})
+            const idDoToken = requisicao.usuario.id
+            const administrador = await administradorModel.buscarPorId(idDoToken)
+            if(!administrador){
+                return resposta.status(404).json({mensagem:"Administrador não encontrado!"})
             }
-            resposta.statrus(200).json(administrador)
+            resposta.status(200).json(administrador)
         } catch (error) {
-            resposta.status(500).json({mensagem: "Erro ao buscar pefil do usuário!", erro: error.message})
+            resposta.status(500).json({mensagem: "Erro ao buscar pefil do administrador!", erro: error.message})
         }
     }
 

@@ -6,6 +6,6 @@ const routerAdmin = express.Router();
 
 routerAdmin.post("/cadastrar", administradorController.cadastrar)
 routerAdmin.post("/login", administradorController.login)
-routerAdmin.get("/perfil/:email", autenticacaoMiddleware.autenticar, administradorController.perfil)
+routerAdmin.get("/perfil", autenticacaoMiddleware.autenticar, administradorController.perfil)
 
 export default routerAdmin

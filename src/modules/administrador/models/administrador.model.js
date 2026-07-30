@@ -10,13 +10,24 @@ class administradorModel{
     static async contarAdmins(){
         const query = `select count(*) from admins`
         const resultado = await conexao.query(query)
-        return Number(resultado.rows)
+        return Number(resultado.rows[0].count)
+    }
+    static async verificaAdminsAtivos(){
+        const query = `select count(*) from admins where ativo = true`
+        const resultado = await conexao.query(query)
+        return Number(resultado.rows[0].count)
     }
     static async buscarPorEmail(email){
         const dados = [email]
         const query = `select * from admins where email = $1`
         const resultado = await conexao.query(query, dados)
-        return resultado.rows
+        return resultado.rows[0]
+    }
+    static async buscarPorId(id){
+        const dados = [id]
+        const query = `select id, nome, email from admins where id = $1`
+        const resultado = await conexao.query(query, dados)
+        return resultado.rows[0]
     }
 }
 
