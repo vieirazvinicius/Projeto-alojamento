@@ -1,0 +1,202 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-08-04T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2026.3.1",
+  "resources": [
+    {
+      "_id": "wrk_1",
+      "_type": "workspace",
+      "name": "Projeto Militar API",
+      "description": "Coleção de rotas para a API Projeto Militar",
+      "scope": "collection"
+    },
+    {
+      "_id": "req_root",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "GET /",
+      "method": "GET",
+      "url": "http://localhost:3000/",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_admin_cadastrar",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "POST /admin/cadastrar",
+      "method": "POST",
+      "url": "http://localhost:3000/admin/cadastrar",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Administrador Exemplo\",\n  \"email\": \"admin@example.com\",\n  \"senha\": \"SenhaForte@123\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_admin_login",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "POST /admin/login",
+      "method": "POST",
+      "url": "http://localhost:3000/admin/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@example.com\",\n  \"senha\": \"SenhaForte@123\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "_id": "req_admin_perfil",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "GET /admin/perfil",
+      "method": "GET",
+      "url": "http://localhost:3000/admin/perfil",
+      "body": {},
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer <JWT_TOKEN>"
+        }
+      ]
+    },
+    {
+      "_id": "req_alojamento_listar",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "GET /alojamento/listar",
+      "method": "GET",
+      "url": "http://localhost:3000/alojamento/listar",
+      "body": {},
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer <JWT_TOKEN>"
+        }
+      ]
+    },
+    {
+      "_id": "req_alojamento_listar_codigo",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "GET /alojamento/listar/:codigo",
+      "method": "GET",
+      "url": "http://localhost:3000/alojamento/listar/ABC123",
+      "body": {},
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer <JWT_TOKEN>"
+        }
+      ]
+    },
+    {
+      "_id": "req_alojamento_cadastrar",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "POST /alojamento/cadastrar",
+      "method": "POST",
+      "url": "http://localhost:3000/alojamento/cadastrar",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"codigo\": \"ABC123\",\n  \"numero\": 101,\n  \"bloco\": \"A\",\n  \"capacidade\": 4,\n  \"ocupacao\": 2\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer <JWT_TOKEN>"
+        }
+      ]
+    },
+    {
+      "_id": "req_alojamento_editar_total",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "PUT /alojamento/editar/total/:codigo",
+      "method": "PUT",
+      "url": "http://localhost:3000/alojamento/editar/total/ABC123",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"novaCapacidade\": 6,\n  \"novaOcupacao\": 3\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer <JWT_TOKEN>"
+        }
+      ]
+    },
+    {
+      "_id": "req_alojamento_editar_parcial",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "PATCH /alojamento/editar/parcial/:codigo",
+      "method": "PATCH",
+      "url": "http://localhost:3000/alojamento/editar/parcial/ABC123",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"novaCapacidade\": 5,\n  \"novaOcupacao\": 4\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer <JWT_TOKEN>"
+        }
+      ]
+    },
+    {
+      "_id": "req_alojamento_excluir_codigo",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "DELETE /alojamento/excluir/:codigo",
+      "method": "DELETE",
+      "url": "http://localhost:3000/alojamento/excluir/ABC123",
+      "body": {},
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer <JWT_TOKEN>"
+        }
+      ]
+    },
+    {
+      "_id": "req_alojamento_excluir_todos",
+      "_type": "request",
+      "parentId": "wrk_1",
+      "name": "DELETE /alojamento/excluir",
+      "method": "DELETE",
+      "url": "http://localhost:3000/alojamento/excluir",
+      "body": {},
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer <JWT_TOKEN>"
+        }
+      ]
+    }
+  ]
+}

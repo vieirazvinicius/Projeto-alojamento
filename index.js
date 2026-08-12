@@ -1,4 +1,5 @@
 import express from "express";
+import criarTabela from "./src/config/create_teables.js";
 import dotenv from "dotenv";
 import router from "./src/modules/alojamento/routes/alojamento.route.js";
 import routerAdmin from "./src/modules/administrador/routes/administrador.route.js";
@@ -24,5 +25,6 @@ app.get("/", (requisicao, resposta) => {
 })
 
 app.listen(porta, () => {
+    criarTabela()
     console.log(`O servidor está em execução!`);
 })
